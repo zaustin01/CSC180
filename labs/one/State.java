@@ -1,6 +1,9 @@
 package auctionlab;
 
-public enum State {
+public interface State {
 
-	DefaultState, UserHomeState, SearchResultsState;
+	State next();
+
+	void show();
+
 }

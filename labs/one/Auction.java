@@ -9,12 +9,14 @@ public class Auction {
 	private int currentBid;
 	private String owner;
 	private String name;
+	private String description;
 	private int startingBid;
 	private Map<String, Object> properties;
 
 	public Auction(Integer id, String name, Integer startingBid) {
 		this.id = id;
 		this.setName(name);
+		this.setDescription("");
 		this.setCurrentBid(startingBid);
 		this.setStartingBid(startingBid);
 		this.properties = new HashMap<String, Object>();
@@ -23,6 +25,25 @@ public class Auction {
 	public Auction(Integer id, String name, Integer startingBid, Map<String, Object> properties){
 		this.id = id;
 		this.setName(name);
+		this.setDescription("");
+		this.setCurrentBid(startingBid);
+		this.setStartingBid(startingBid);
+		this.properties = properties;
+	}
+	
+	public Auction(Integer id, String name, String description, Integer startingBid) {
+		this.id = id;
+		this.setName(name);
+		this.setDescription(description);
+		this.setCurrentBid(startingBid);
+		this.setStartingBid(startingBid);
+		this.properties = new HashMap<String, Object>();
+	}
+	
+	public Auction(Integer id, String name, String description, Integer startingBid, Map<String, Object> properties){
+		this.id = id;
+		this.setName(name);
+		this.setDescription(description);
 		this.setCurrentBid(startingBid);
 		this.setStartingBid(startingBid);
 		this.properties = properties;
@@ -113,5 +134,13 @@ public class Auction {
 	
 	public void setProperty(String propertyName, Object propertyValue){
 		properties.put(propertyName, propertyValue);
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

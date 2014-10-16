@@ -2,12 +2,14 @@ package auctionlab;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Scanner;
 
 public class EventLoop {
 
-	private Queue<Event> active;
-	private Queue<Event> expired;
+	private Queue<State> active;
+	private Queue<State> expired;
 	private InMemoryAuctionService imas;
+	private Scanner scan = new Scanner(System.in);
 
 	public EventLoop() {
 
@@ -15,26 +17,32 @@ public class EventLoop {
 		imas.create(new Auction(0, "Toaster", 20));
 		imas.create(new Auction(1, "Lovely Toaster", 35));
 		imas.create(new Auction(2, "Peace, Love, Pi", 30));
-		this.active = new LinkedList<Event>();
-		active.offer(new User(imas));
-		this.expired = new LinkedList<Event>();
+		this.active = new LinkedList<State>();
+		this.expired = new LinkedList<State>();
 	}
 
 	public void begin() {
+//		State startup = new DefaultState(imas, scan);
+//		while(startup instanceof DefaultState){
+//			startup.show();
+//			startup = startup.next();
+//		}
+//		active.offer(startup);
+//		active.offer(new DefaultState(imas, scan));
 		while (true) {
-			Event e = active.poll();
-			if (e == null) {
-				Queue<Event> temp = expired;
+			State currentState = active.poll();
+			if (currentState == null) {
+				Queue<State> temp = expired;
 				expired = active;
 				active = temp;
-				e = active.poll();
+				currentState = active.poll();
 			}
-			e.show();
-			State s = e.next();
-			if (s != State.DefaultState && expired.isEmpty()){
-				expired.offer(new User(imas));
+			currentState.show();
+			State newState = currentState.next();
+			if (expired.isEmpty() && !(newState instanceof DefaultState)){
+				expired.offer(new DefaultState(imas, scan));
 			}
-			expired.offer(e);
+			expired.offer(newState);
 
 		}
 
